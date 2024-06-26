@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.modern.devtools</groupId>
+    <artifactId>modern-devtools</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <modernframework.version>1.0.0-SNAPSHOT</modernframework.version>
+        <modern-mom-bom>1.0.0-SNAPSHOT</modern-mom-bom>
+        <springfox-swagger-common.version>2.6.1</springfox-swagger-common.version>
+        <shiro.version>1.4.1</shiro.version>
+        <jwt.version>3.8.3</jwt.version>
+        <ini4j.version>0.5.4</ini4j.version>
+        <dynamic-datasource-spring-boot-starter.version>3.2.1</dynamic-datasource-spring-boot-starter.version>
+        <fastjson.version>1.2.75</fastjson.version>
+        <drools.version>7.22.0.Final</drools.version>
+        <gexin-rp-sdk-http.version>4.1.1.4</gexin-rp-sdk-http.version>
+        <weixin-java-mp.version>3.3.0</weixin-java-mp.version>
+        <activiti.version>6.0.0</activiti.version>
+        <quartz.version>2.3.0</quartz.version>
+        <kryo.version>4.0.1</kryo.version>
+        <netty.version>4.1.42.Final</netty.version>
+        <easypoi.version>4.2.0</easypoi.version>
+        <java-uuid-generator.version>3.1.0</java-uuid-generator.version>
+
+        <!-- Maven Plugins 版本 -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <spring-boot-maven-plugin.version>2.7.12</spring-boot-maven-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <tomcat7-maven-plugin.version>2.1</tomcat7-maven-plugin.version>
+        <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
+
+        <!-- Testing 版本 -->
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.modernframework</groupId>
+                <artifactId>modern-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>modern-devtools-java</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>getui-nexus</id>
+            <url>http://mvn.gt.getui.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+                    <argLine>--add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED</argLine>
+                    <argLine>-Dillegal-access=permit</argLine>
+                </configuration>
+            </plugin>
+            <!--配置生成源码包-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <additionalOptions>
+                        <additionalOption>-Xdoclint:none</additionalOption>
+                    </additionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jdk8</id>
+            <properties>
+                <maven.compiler.source>8</maven.compiler.source>
+                <maven.compiler.target>8</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdk11</id>
+            <properties>
+                <maven.compiler.source>11</maven.compiler.source>
+                <maven.compiler.target>11</maven.compiler.target>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>jdk17</id>
+            <properties>
+                <maven.compiler.source>17</maven.compiler.source>
+                <maven.compiler.target>17</maven.compiler.target>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>
