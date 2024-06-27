@@ -12,9 +12,10 @@ import lombok.Getter;
 public enum Command {
 
     SET_WORK_PATH("set", "设置项目目录", 1),
-    LOAD("load", "加载路径下的文件", 2),
+    CONFIG("config", "设置", 2),
+    LOAD("load", "加载路径下的文件", 3),
 
-    LIST_1("list1", "列出文件目录结构", 3),
+//    LIST_1("list1", "列出文件目录结构", 4),
     LIST_2("list2", "列出同名Java文件", 4),
     LIST_ERROR("list error", "列出有问题的文件", 5),
 

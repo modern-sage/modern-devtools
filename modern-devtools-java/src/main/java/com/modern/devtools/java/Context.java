@@ -24,6 +24,11 @@ public class Context {
 
     private String workPath;
 
+    /**
+     * 配置
+     */
+    private Config config;
+
     Map<String, List<JavaFile>> javaFileMap = new HashMap<>();
 
     private Context() {
