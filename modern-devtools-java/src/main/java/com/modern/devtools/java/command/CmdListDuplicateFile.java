@@ -22,7 +22,7 @@ public class CmdListDuplicateFile implements CmdExecutor {
     }
 
     @Override
-    public void execute() {
+    public void execute(String command) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
         System.out.println("同类名的文件如下：");
         List<Cell> header = new ArrayList<>() {{

@@ -1,5 +1,7 @@
 com.modern.devtools.java.command.CmdExit
+com.modern.devtools.java.command.CmdInfoJava
 com.modern.devtools.java.command.CmdList
+com.modern.devtools.java.command.CmdListDuplicateFile
+com.modern.devtools.java.command.CmdListError
 com.modern.devtools.java.command.CmdLoad
 com.modern.devtools.java.command.CmdSetWorkPath
-com.modern.devtools.java.command.CmdListDuplicateFile

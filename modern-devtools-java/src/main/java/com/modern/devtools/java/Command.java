@@ -16,11 +16,14 @@ public enum Command {
 
     LIST_1("list1", "列出文件目录结构", 3),
     LIST_2("list2", "列出同名Java文件", 4),
+    LIST_ERROR("list error", "列出有问题的文件", 5),
+
+    INFO_JAVA("info java", "查看Java文件信息", 50),
 
     FIX_1("fix1", "修复 package 信息", 100),
     FIX_2("fix2", "修复 import 信息", 101),
 
-    LIST("list", "列出所有指令", Integer.MAX_VALUE - 1),
+    LIST("list cmd", "列出所有指令", Integer.MAX_VALUE - 1),
 
     EXIT("exit", "推出", Integer.MAX_VALUE),
 

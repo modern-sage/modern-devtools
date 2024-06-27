@@ -12,7 +12,7 @@ public interface CmdExecutor {
 
     String supportCommand();
 
-    void execute();
+    void execute(String command);
 
     default int getPriority() {
         return 0;

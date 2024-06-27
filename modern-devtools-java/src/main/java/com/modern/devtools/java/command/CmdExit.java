@@ -17,7 +17,7 @@ public class CmdExit implements CmdExecutor {
     }
 
     @Override
-    public void execute() {
+    public void execute(String command) {
         Context.getContext().destroy();
         System.out.println("程序退出。");
     }

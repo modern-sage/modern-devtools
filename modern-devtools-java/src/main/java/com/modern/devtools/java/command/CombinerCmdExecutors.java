@@ -1,7 +1,5 @@
 package com.modern.devtools.java.command;
 
-import com.modern.devtools.java.Command;
-
 import java.util.*;
 
 /**
@@ -27,9 +25,10 @@ public abstract class CombinerCmdExecutors {
     }
 
     public static void execute(String command) {
-        List<CmdExecutor> executors = DEPOSITORY.get(command);
+        List<CmdExecutor> executors = DEPOSITORY.keySet().stream().filter(command::startsWith)
+                .findFirst().map(DEPOSITORY::get).orElse(null);
         if (executors != null) {
-            executors.forEach(CmdExecutor::execute);
+            executors.forEach(x -> x.execute(command));
         }
     }
 

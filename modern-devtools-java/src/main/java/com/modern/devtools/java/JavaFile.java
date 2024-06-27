@@ -13,8 +13,20 @@ import java.io.File;
 @Data
 public class JavaFile {
     private File file;
+
+    /**
+     * 路径
+     */
     private String javaPath;
+
+    /**
+     * 全类名
+     */
     private String javaName;
+
+    /**
+     * 简单名称
+     */
     private String javaSimpleName;
 
     /**

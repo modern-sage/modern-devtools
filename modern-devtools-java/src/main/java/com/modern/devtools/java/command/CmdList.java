@@ -20,7 +20,7 @@ public class CmdList implements CmdExecutor {
     }
 
     @Override
-    public void execute() {
+    public void execute(String command) {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(Command.values())
                 .sorted(Comparator.comparingInt(Command::getSort))

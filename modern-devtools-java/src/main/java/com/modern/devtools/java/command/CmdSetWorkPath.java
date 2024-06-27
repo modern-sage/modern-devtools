@@ -19,7 +19,7 @@ public class CmdSetWorkPath implements CmdExecutor {
     }
 
     @Override
-    public void execute() {
+    public void execute(String command) {
         System.out.print("清输入项目路径: \n");
         getContext().setWorkPath(getContext().getScanner().nextLine().trim());
         System.out.printf("项目路径设置为: %s%n", getContext().getWorkPath());
