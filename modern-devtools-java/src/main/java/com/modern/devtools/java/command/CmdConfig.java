@@ -3,8 +3,6 @@ package com.modern.devtools.java.command;
 import com.modern.devtools.java.Command;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -40,21 +38,17 @@ public class CmdConfig implements CmdExecutor {
                     String configFilePath = args[i + 1];
                     Properties properties = new Properties();
                     try(FileInputStream fis = new FileInputStream(configFilePath)) {
-
+                        properties.load(fis);
+                        getContext().getConfig().setWorkPath(properties.getProperty("workPath"));
+                        getContext().getConfig().setPackagePreFix(properties.getProperty("packagePreFix"));
                     } catch (Throwable e) {
                         System.err.println();
                     }
-                    properties.load(new FileInputStream(configFilePath));
-
-                    Properties properties = getContext().getConfig().loadConfig(configFilePath);
                     break;
                 default:
                     break;
             }
         }
-
-        System.out.print("清输入项目路径: \n");
-        getContext().setWorkPath(getContext().getScanner().nextLine().trim());
-        System.out.printf("项目路径设置为: %s%n", getContext().getWorkPath());
+        System.out.printf("设置完毕: %s%n", getContext().getConfig().toString());
     }
 }

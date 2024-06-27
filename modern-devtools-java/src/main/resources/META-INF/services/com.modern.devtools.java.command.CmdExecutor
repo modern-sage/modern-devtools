@@ -1,3 +1,4 @@
+com.modern.devtools.java.command.CmdConfig
 com.modern.devtools.java.command.CmdExit
 com.modern.devtools.java.command.CmdFixImport
 com.modern.devtools.java.command.CmdFixPackage
