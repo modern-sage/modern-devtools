@@ -28,7 +28,7 @@ public abstract class FileUtils {
     public static void dfsTraversalFiles(File fileIter, Map<String, List<JavaFile>> javaFileMap,
                                          Predicate<File>... filters) {
         if (fileIter.isDirectory()) {
-            // System.out.printf("目录: %s%n", fileIter.getAbsolutePath());
+//             System.out.printf("目录: %s%n", fileIter.getAbsolutePath());
             File[] subFiles = fileIter.listFiles();
             if (ArrayUtils.isNotEmpty(subFiles)) {
                 List<File> directories = new LinkedList<>();

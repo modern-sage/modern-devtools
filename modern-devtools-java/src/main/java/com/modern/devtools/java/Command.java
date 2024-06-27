@@ -20,8 +20,8 @@ public enum Command {
 
     INFO_JAVA("info java", "查看Java文件信息", 50),
 
-    FIX_1("fix1", "修复 package 信息", 100),
-    FIX_2("fix2", "修复 import 信息", 101),
+    FIX_PACKAGE("fix package", "修复 package 信息", 100),
+    FIX_IMPORT("fix import", "修复 import 信息", 101),
 
     LIST("list cmd", "列出所有指令", Integer.MAX_VALUE - 1),
 

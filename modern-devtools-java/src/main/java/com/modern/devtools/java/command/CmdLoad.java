@@ -29,7 +29,7 @@ public class CmdLoad implements CmdExecutor {
         File currentFile = new File(getContext().getWorkPath());
         ForkJoinPool.commonPool().execute(() -> {
             FileUtils.dfsTraversalFiles(currentFile,
-                    javaFileMap, (f) -> f.getAbsoluteFile().getName().endsWith(".java")
+                    javaFileMap, (f) -> f.getAbsoluteFile().getName().endsWith(".java") && !f.getAbsolutePath().contains("node_modules")
             );
             countDownLatch.countDown();
         });

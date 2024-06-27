@@ -1,4 +1,5 @@
 com.modern.devtools.java.command.CmdExit
+com.modern.devtools.java.command.CmdFixPackage
 com.modern.devtools.java.command.CmdInfoJava
 com.modern.devtools.java.command.CmdList
 com.modern.devtools.java.command.CmdListDuplicateFile
