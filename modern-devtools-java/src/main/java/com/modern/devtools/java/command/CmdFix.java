@@ -126,7 +126,7 @@ public class CmdFix implements CmdExecutor {
                         }
                         if (javaFileMap.containsKey(simpleJavaName) && (
                                 // 前缀匹配
-                                StringUtils.isBlank(getContext().getPackagePreFix()) || importText.contains(getContext().getPackagePreFix())
+                                getContext().getConfig().includePackage(importText)
                         )) {
                             List<JavaFile> matchJavaFiles = javaFileMap.get(simpleJavaName);
                             boolean matched = false;

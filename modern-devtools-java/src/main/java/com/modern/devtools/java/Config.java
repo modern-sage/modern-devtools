@@ -1,6 +1,9 @@
 package com.modern.devtools.java;
 
+import com.modernframework.core.utils.StringUtils;
 import lombok.Data;
+
+import java.util.Arrays;
 
 /**
  * Config
@@ -17,10 +20,18 @@ public class Config {
     private String workPath;
 
     /**
-     * package前缀，如果配置了则在修复的时候只会对该前缀的类、import信息进行修复与匹配
+     * 需要修复的包名，如果配置了，则只会对配置的包名进行修复
      */
-    private String packagePreFix;
+    private String includePackages;
 
-
+    public boolean includePackage(String packageName) {
+        if(includePackages == null || includePackages.isEmpty()) {
+            return true;
+        }
+        if(StringUtils.isBlank(packageName)) {
+            return false;
+        }
+        return Arrays.stream(includePackages.split(",")).anyMatch(packageName::startsWith);
+    }
 
 }

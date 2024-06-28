@@ -44,10 +44,6 @@ public class Context {
         return getContext().getConfig().getWorkPath();
     }
 
-    public String getPackagePreFix() {
-        return getContext().getConfig().getPackagePreFix();
-    }
-
     public static Context getContext() {
         return CONTEXT;
     }

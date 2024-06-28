@@ -35,9 +35,9 @@ public class CmdConfig implements CmdExecutor {
                         getContext().getConfig().setWorkPath(args[i + 1]);
                     }
                     break out;
-                case "--packagePreFix":
+                case "--includePackages":
                     if (args.length > i + 1) {
-                        getContext().getConfig().setPackagePreFix(args[i + 1]);
+                        getContext().getConfig().setIncludePackages(args[i + 1]);
                     }
                     break out;
                 case "--file":
@@ -46,7 +46,7 @@ public class CmdConfig implements CmdExecutor {
                     try (FileInputStream fis = new FileInputStream(configFilePath)) {
                         properties.load(fis);
                         getContext().getConfig().setWorkPath(properties.getProperty("workPath"));
-                        getContext().getConfig().setPackagePreFix(properties.getProperty("packagePreFix"));
+                        getContext().getConfig().setIncludePackages(properties.getProperty("includePackages"));
                     } catch (Throwable e) {
                         System.err.println();
                     }
