@@ -22,8 +22,6 @@ public class Context {
 
     private Scanner scanner;
 
-    private String workPath;
-
     /**
      * 配置
      */
@@ -34,11 +32,20 @@ public class Context {
     private Context() {
         this.running = true;
         scanner = new Scanner(System.in);
+        this.config = new Config();
     }
 
     public void destroy() {
         this.running = false;
         this.scanner.close();
+    }
+
+    public String getWorkPath() {
+        return getContext().getConfig().getWorkPath();
+    }
+
+    public String getPackagePreFix() {
+        return getContext().getConfig().getPackagePreFix();
     }
 
     public static Context getContext() {

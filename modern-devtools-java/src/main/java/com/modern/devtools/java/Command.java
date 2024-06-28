@@ -2,6 +2,8 @@ package com.modern.devtools.java;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 指令
  *
@@ -11,33 +13,57 @@ import lombok.Getter;
 @Getter
 public enum Command {
 
-    SET_WORK_PATH("set", "设置项目目录", 1),
-    CONFIG("config", "设置", 2),
-    LOAD("load", "加载路径下的文件", 3),
+    CONFIG("config", "设置",
+            new String[]{"--workPath", "--packagePreFix", "--file"},
+            new String[]{"设置工作目录", "设置包名前缀", "从文件中配置"}),
 
-//    LIST_1("list1", "列出文件目录结构", 4),
-    LIST_2("list2", "列出同名Java文件", 4),
-    LIST_ERROR("list error", "列出有问题的文件", 5),
+    LOAD("load", "加载路径下的文件"),
 
-    INFO_JAVA("info java", "查看Java文件信息", 50),
+    INFO("info", "查看信息",
+            new String[]{"--java",},
+            new String[]{"查看Java文件信息"}),
 
-    FIX_PACKAGE("fix package", "修复 package 信息", 100),
-    FIX_IMPORT("fix import", "修复 import 信息", 101),
+    LIST("list", "列出信息",
+            new String[]{"--cmd", "--error", "--duplicate"},
+            new String[]{"列出所有指令", "列出有问题的文件", "列出同名Java文件"}),
 
-    LIST("list cmd", "列出所有指令", Integer.MAX_VALUE - 1),
+    FIX("fix", "修复",
+            new String[]{"--package", "--import"},
+            new String[]{"修复 package 信息", "修复 import 信息"}),
 
-    EXIT("exit", "推出", Integer.MAX_VALUE),
+    EXIT("exit", "推出"),
 
     ;
 
     private String key;
     private String desc;
-    private int sort;
 
-    Command(String key, String desc, int sort) {
+    /**
+     * 子指令
+     */
+    private String[] subKeys;
+    /**
+     * 子指令说明
+     */
+    private String[] subDescs;
+
+
+    Command(String key, String desc) {
         this.key = key;
         this.desc = desc;
-        this.sort = sort;
+    }
+
+    Command(String key, String desc, String[] subKeys, String[] subDescs) {
+        this.key = key;
+        this.desc = desc;
+        this.subKeys = subKeys;
+        this.subDescs = subDescs;
+    }
+
+    public static int getTotal() {
+        return Arrays.stream(Command.values())
+                .map(x -> 1 + (x.subKeys == null ? 0 : x.subKeys.length))
+                .reduce(0, Integer::sum);
     }
 
 }

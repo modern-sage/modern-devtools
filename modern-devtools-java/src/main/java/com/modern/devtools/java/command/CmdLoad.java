@@ -23,7 +23,7 @@ public class CmdLoad implements CmdExecutor {
     }
 
     @Override
-    public void execute(String command) {
+    public void doExecute(String[] args) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         File currentFile = new File(getContext().getWorkPath());

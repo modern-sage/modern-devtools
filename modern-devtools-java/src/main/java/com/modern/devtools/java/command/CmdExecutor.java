@@ -1,5 +1,6 @@
 package com.modern.devtools.java.command;
 
+import com.modern.devtools.java.Command;
 import com.modern.devtools.java.Context;
 
 /**
@@ -12,7 +13,14 @@ public interface CmdExecutor {
 
     String supportCommand();
 
-    void execute(String command);
+    default void execute(String command) {
+        String[] args = command.trim().split(" ");
+        String[] args2 = new String[args.length - 1];
+        System.arraycopy(args, 1, args2, 0, args.length - 1);
+        doExecute(args2);
+    }
+
+    void doExecute(String[] args);
 
     default int getPriority() {
         return 0;

@@ -1,5 +1,6 @@
 package com.modern.devtools.java;
 
+import com.modern.devtools.java.utils.ConsoleUtils;
 import lombok.Data;
 
 import java.io.File;
@@ -12,7 +13,11 @@ import java.io.File;
  */
 @Data
 public class JavaFile {
-    private File file;
+
+    /**
+     * 文件路径
+     */
+    private String absoluteFilePath;
 
     /**
      * 路径
@@ -34,12 +39,8 @@ public class JavaFile {
      */
     private String moduleName;
 
-    @Override
-    public String toString() {
-        return "JavaFile{" +
-                "file=" + file +
-                ", javaPath='" + javaPath + '\'' +
-                ", importStr='" + javaName + '\'' +
-                '}';
+    public File getFile() {
+        return new File(absoluteFilePath);
     }
+
 }

@@ -3,10 +3,15 @@ package com.modern.devtools.java.command;
 
 import com.modern.devtools.java.Command;
 import com.modern.devtools.java.JavaFile;
+import com.modern.devtools.java.utils.ConsoleUtils;
+import com.modern.devtools.java.utils.FileUtils;
 import com.modernframework.core.utils.CollectionUtils;
 import com.modernframework.core.utils.StringUtils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,30 +24,83 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="mailto:brucezhang_jjz@163.com">zhangjun</a>
  * @since 1.0.0
  */
-public class CmdFixImport implements CmdExecutor {
+public class CmdFix implements CmdExecutor {
 
     @Override
     public String supportCommand() {
-        return Command.FIX_IMPORT.getKey();
+        return Command.FIX.getKey();
     }
 
     @Override
-    public void execute(String command) {
+    public void doExecute(String[] args) {
+        if (args.length == 0) {
+            return;
+        }
+        out:
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            switch (arg) {
+                case "--package":
+                    doFixPackage(args);
+                    break out;
+                case "--import":
+                    doFixImport(args);
+                    break out;
+            }
+        }
+    }
+
+    private void doFixPackage(String[] args) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
         AtomicInteger fixNum = new AtomicInteger();
         javaFileMap.values().forEach(x -> x.forEach(y -> {
             File file = y.getFile();
-            StringBuilder javaContent = new StringBuilder();
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    javaContent.append(line).append("\n");
+            String javaContent = FileUtils.readFile(file);
+            String[] contents = javaContent.split("\n");
+            String sourceImport = "";
+            for (String content : contents) {
+                if (content.startsWith("package ")) {
+                    sourceImport = content;
+                    break;
                 }
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
             }
 
-            String[] contents = javaContent.toString().split("\n");
+            if(StringUtils.isBlank(sourceImport)) {
+                System.err.printf("文件 %s 缺少 package 信息%n", y.getJavaName());
+            } else {
+                try {
+                    String packageText = sourceImport.substring("package".length() + 1, sourceImport.lastIndexOf(";")).trim();
+                    if (!packageText.equals(y.getJavaPath())) {
+                        String targetImport = "package " + y.getJavaPath() + ";";
+                        String targetContext = javaContent.replace(sourceImport, targetImport);
+                        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                            bw.write(targetContext);
+                            bw.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // 修复
+                        System.out.printf("修复 %s package 信息，%s -> %s%n", y.getJavaSimpleName(), sourceImport, targetImport);
+                        fixNum.addAndGet(1);
+                    }
+                } catch (StringIndexOutOfBoundsException e) {
+                    // debug ...
+                    e.printStackTrace();
+                }
+            }
+
+
+        }));
+        System.out.printf("修复完成，修复文件数: %s%n", fixNum.get());
+    }
+
+    private void doFixImport(String[] args) {
+        Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
+        AtomicInteger fixNum = new AtomicInteger();
+        javaFileMap.values().forEach(x -> x.forEach(y -> {
+            File file = y.getFile();
+            String javaContent = FileUtils.readFile(file);
+            String[] contents = javaContent.split("\n");
             List<String> sourceImports = new LinkedList<>();
             for (String content : contents) {
                 if (content.startsWith("import ")) {
@@ -66,8 +124,10 @@ public class CmdFixImport implements CmdExecutor {
                             importText = s.substring("import ".length(), s.lastIndexOf(";")).trim();
                             simpleJavaName = importText.substring(importText.lastIndexOf(".") + 1);
                         }
-
-                        if (javaFileMap.containsKey(simpleJavaName)) {
+                        if (javaFileMap.containsKey(simpleJavaName) && (
+                                // 前缀匹配
+                                StringUtils.isBlank(getContext().getPackagePreFix()) || importText.contains(getContext().getPackagePreFix())
+                        )) {
                             List<JavaFile> matchJavaFiles = javaFileMap.get(simpleJavaName);
                             boolean matched = false;
                             for (JavaFile matchJavaFile : matchJavaFiles) {
@@ -103,7 +163,7 @@ public class CmdFixImport implements CmdExecutor {
                             }
                         }
 
-                        if(!replaceMap.isEmpty()) {
+                        if (!replaceMap.isEmpty()) {
                             fixNum.addAndGet(1);
                             System.out.printf("修复 %s import 信息%n", y.getJavaName());
                             String targetContext = javaContent.toString();
@@ -127,4 +187,6 @@ public class CmdFixImport implements CmdExecutor {
         }));
         System.out.printf("修复完成，修复文件数: %s%n", fixNum.get());
     }
+
+
 }

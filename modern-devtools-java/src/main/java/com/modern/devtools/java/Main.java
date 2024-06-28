@@ -27,7 +27,7 @@ public class Main {
     public static void main(String[] args) {
 
         while (CONTEXT.isRunning()) {
-            System.out.print("请输入指令 (list cmd 查看命令, exit 退出): \n");
+            System.out.print("请输入指令 (list --cmd 查看命令, exit 退出): \n");
             String command = CONTEXT.getScanner().nextLine().trim();
             CombinerCmdExecutors.execute(command);
         }

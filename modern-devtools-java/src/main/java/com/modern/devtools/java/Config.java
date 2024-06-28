@@ -17,7 +17,7 @@ public class Config {
     private String workPath;
 
     /**
-     * package前缀，如果配置了则在修复的时候只会对该前缀的类、package信息、import信息进行修复与匹配
+     * package前缀，如果配置了则在修复的时候只会对该前缀的类、import信息进行修复与匹配
      */
     private String packagePreFix;
 

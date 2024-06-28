@@ -5,7 +5,9 @@ import com.modern.devtools.java.Progress;
 import com.modernframework.core.utils.ArrayUtils;
 import com.modernframework.core.utils.CollectionUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -18,6 +20,23 @@ import static com.modern.devtools.java.constant.Base.SEPARATOR_CHAR;
  * @since 1.0.0
  */
 public abstract class FileUtils {
+
+    public static String readFile(String filePath) {
+        return readFile(new File(filePath));
+    }
+
+    public static String readFile(File file) {
+        StringBuilder javaContent = new StringBuilder();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                javaContent.append(line).append("\n");
+            }
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+        return javaContent.toString();
+    }
 
     /**
      * @param fileIter    当前遍历的文件
@@ -38,7 +57,7 @@ public abstract class FileUtils {
                     } else {
                         if (filters != null && Arrays.stream(filters).allMatch(f -> f.test(x))) {
                             JavaFile javaFile = new JavaFile();
-                            javaFile.setFile(x);
+                            javaFile.setAbsoluteFilePath(x.getAbsolutePath());
                             String filePath = x.getAbsoluteFile().getParent();
                             String javaPath = filePath.substring(filePath.lastIndexOf(SEPARATOR_CHAR + "java") + 6)
                                     .replace(SEPARATOR_CHAR, ".");
@@ -47,9 +66,6 @@ public abstract class FileUtils {
                             javaFile.setJavaSimpleName(javaSimpleName);
                             String javaName = javaPath + "." + javaSimpleName;
                             javaFile.setJavaName(javaName);
-//                                if(javaFileMap.containsKey(javaSimpleName)) {
-//                                    System.out.println(1);
-//                                }
                             javaFileMap.computeIfAbsent(javaSimpleName, k -> new LinkedList<>()).add(javaFile);
 //                                System.out.printf("\t文件: %s%n", javaFile);
                         }
