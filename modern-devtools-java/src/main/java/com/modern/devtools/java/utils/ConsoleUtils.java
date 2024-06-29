@@ -1,6 +1,5 @@
 package com.modern.devtools.java.utils;
 
-import com.modernframework.core.convert.ConvertUtils;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,7 +21,7 @@ public abstract class ConsoleUtils {
                         field.setAccessible(true);
                         try {
                             kvList.add(new String[]{field.getName(),
-                                    ConvertUtils.convertIfPossible(field.get(obj), String.class, "")});
+                                    String.valueOf(field.get(obj))});
                         } catch (IllegalAccessException ignore) {
                         }
                     });

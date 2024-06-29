@@ -15,23 +15,9 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <modernframework.version>1.0.0-SNAPSHOT</modernframework.version>
-        <modern-mom-bom>1.0.0-SNAPSHOT</modern-mom-bom>
-        <springfox-swagger-common.version>2.6.1</springfox-swagger-common.version>
-        <shiro.version>1.4.1</shiro.version>
-        <jwt.version>3.8.3</jwt.version>
-        <ini4j.version>0.5.4</ini4j.version>
-        <dynamic-datasource-spring-boot-starter.version>3.2.1</dynamic-datasource-spring-boot-starter.version>
-        <fastjson.version>1.2.75</fastjson.version>
-        <drools.version>7.22.0.Final</drools.version>
-        <gexin-rp-sdk-http.version>4.1.1.4</gexin-rp-sdk-http.version>
-        <weixin-java-mp.version>3.3.0</weixin-java-mp.version>
-        <activiti.version>6.0.0</activiti.version>
-        <quartz.version>2.3.0</quartz.version>
-        <kryo.version>4.0.1</kryo.version>
-        <netty.version>4.1.42.Final</netty.version>
-        <easypoi.version>4.2.0</easypoi.version>
-        <java-uuid-generator.version>3.1.0</java-uuid-generator.version>
+        <jackson.version>2.13.5</jackson.version>
+        <lombok.version>1.18.26</lombok.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
 
         <!-- Maven Plugins 版本 -->
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -47,18 +33,6 @@
         <junit.version>4.12</junit.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.modernframework</groupId>
-                <artifactId>modern-dependencies</artifactId>
-                <version>${revision}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <modules>
         <module>modern-devtools-java</module>
     </modules>
@@ -69,6 +43,26 @@
             <url>http://mvn.gt.getui.com/nexus/content/repositories/releases/</url>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

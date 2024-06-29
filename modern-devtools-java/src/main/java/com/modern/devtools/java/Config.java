@@ -1,7 +1,7 @@
 package com.modern.devtools.java;
 
-import com.modernframework.core.utils.StringUtils;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;

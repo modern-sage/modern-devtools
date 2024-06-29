@@ -3,10 +3,10 @@ package com.modern.devtools.java.command;
 
 import com.modern.devtools.java.Command;
 import com.modern.devtools.java.JavaFile;
+import com.modern.devtools.java.utils.CollectionUtils;
 import com.modern.devtools.java.utils.ConsoleUtils;
 import com.modern.devtools.java.utils.FileUtils;
-import com.modernframework.core.utils.CollectionUtils;
-import com.modernframework.core.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;

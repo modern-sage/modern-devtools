@@ -6,7 +6,7 @@ import com.modern.devtools.java.third.clyoudu.consoletable.table.Body;
 import com.modern.devtools.java.third.clyoudu.consoletable.table.Cell;
 import com.modern.devtools.java.third.clyoudu.consoletable.table.Header;
 import com.modern.devtools.java.third.clyoudu.consoletable.util.StringPadUtil;
-import com.modernframework.core.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

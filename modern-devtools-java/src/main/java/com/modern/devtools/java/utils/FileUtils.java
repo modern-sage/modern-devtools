@@ -2,9 +2,7 @@ package com.modern.devtools.java.utils;
 
 import com.modern.devtools.java.Context;
 import com.modern.devtools.java.JavaFile;
-import com.modern.devtools.java.Progress;
-import com.modernframework.core.utils.ArrayUtils;
-import com.modernframework.core.utils.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
