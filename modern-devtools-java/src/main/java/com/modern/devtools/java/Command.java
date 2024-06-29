@@ -28,8 +28,8 @@ public enum Command {
             new String[]{"列出所有指令", "列出有问题的文件", "列出同名Java文件"}),
 
     FIX("fix", "修复",
-            new String[]{"--package", "--import"},
-            new String[]{"修复 package 信息", "修复 import 信息"}),
+            new String[]{"--package", "--import", "--replace"},
+            new String[]{"修复 package 信息", "修复 import 信息", "替换文本，参数是 ${source} ${target}"}),
 
     EXIT("exit", "推出"),
 

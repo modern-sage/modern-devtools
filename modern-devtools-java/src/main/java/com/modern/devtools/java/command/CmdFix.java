@@ -46,9 +46,40 @@ public class CmdFix implements CmdExecutor {
                 case "--import":
                     doFixImport(args);
                     break out;
+                case "--replace":
+                    if (args.length > i + 2) {
+                        doFixReplace(args[i + 1], args[i + 2]);
+                    }
+                    break out;
             }
         }
     }
+
+    private void doFixReplace(String source, String target) {
+        Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
+        AtomicInteger fixNum = new AtomicInteger();
+        javaFileMap.values().forEach(x -> x.forEach(y -> {
+            File file = y.getFile();
+            String javaContent = FileUtils.readFile(file);
+            String targetJavaContent = null;
+            if (javaContent.contains(source)) {
+                targetJavaContent = javaContent.replaceAll(source, target);
+            }
+            if(targetJavaContent != null) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                    bw.write(targetJavaContent);
+                    bw.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                // 修复
+                System.out.printf("修复 %s，%s -> %s%n", y.getJavaSimpleName(), source, target);
+                fixNum.addAndGet(1);
+            }
+        }));
+        System.out.printf("修复完成，修复文件数: %s%n", fixNum.get());
+    }
+
 
     private void doFixPackage(String[] args) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
