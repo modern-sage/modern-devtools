@@ -1,9 +1,9 @@
 package com.modern.devtools.java;
 
-import com.modern.devtools.java.utils.ConsoleUtils;
 import lombok.Data;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * JavaFile
@@ -12,7 +12,7 @@ import java.io.File;
  * @since 1.0.0
  */
 @Data
-public class JavaFile {
+public class JavaFile implements Serializable {
 
     /**
      * 文件路径

@@ -1,5 +1,6 @@
 package com.modern.devtools.java.utils;
 
+import com.modern.devtools.java.Context;
 import com.modern.devtools.java.JavaFile;
 import com.modern.devtools.java.Progress;
 import com.modernframework.core.utils.ArrayUtils;
@@ -9,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Predicate;
 
 import static com.modern.devtools.java.constant.Base.SEPARATOR_CHAR;
@@ -36,6 +39,35 @@ public abstract class FileUtils {
             throw new RuntimeException(e);
         }
         return javaContent.toString();
+    }
+
+    public static void loadJavaFiles() {
+        Context context = Context.getContext();
+        Map<String, List<JavaFile>> javaFileMap = context.getJavaFileMap();
+        javaFileMap.clear();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        File currentFile = new File(context.getWorkPath());
+        ForkJoinPool.commonPool().execute(() -> {
+            FileUtils.dfsTraversalFiles(currentFile,
+                    javaFileMap, (f) -> f.getAbsoluteFile().getName().endsWith(".java") && !f.getAbsolutePath().contains("node_modules")
+            );
+            countDownLatch.countDown();
+        });
+
+        String[] spinner = {"-", "\\", "|", "/"};
+        int i = 0;
+        while (countDownLatch.getCount() > 0) {
+            System.out.printf("\r%s Loading %s", spinner[i % spinner.length], currentFile.getAbsolutePath());
+            System.out.flush();
+            i += 1;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println();
+        System.out.printf("加载完所有的 java 文件。数量：%d%n", javaFileMap.size());
     }
 
     /**

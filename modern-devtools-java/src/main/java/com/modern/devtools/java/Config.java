@@ -3,6 +3,7 @@ package com.modern.devtools.java;
 import com.modernframework.core.utils.StringUtils;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Arrays;
  * @since 1.0.0
  */
 @Data
-public class Config {
+public class Config implements Serializable {
 
     /**
      * 工作目录，在这里配置的文件夹路径，会扫描该目录下的所有文件，进行修复

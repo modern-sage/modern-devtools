@@ -35,6 +35,10 @@ public enum Command {
             new String[]{"--list", "--exec"},
             new String[]{"查看执行历史", "执行历史命令，参数是 ${指令序号}"}),
 
+    BACKUP("backup", "存档",
+            new String[]{"--save", "--read"},
+            new String[]{"存档，参数是 ${文件路径}", "读挡，参数是 ${文件路径}"}),
+
     EXIT("exit", "推出"),
 
     ;

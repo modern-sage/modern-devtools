@@ -2,6 +2,7 @@ package com.modern.devtools.java;
 
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -11,11 +12,16 @@ import java.util.function.Predicate;
  * @author <a href="mailto:brucezhang_jjz@163.com">zhangjun</a>
  * @since 1.0.0
  */
-public class CmdHisList {
+
+public class CmdHisList implements Serializable {
     private final int capacity;
     private final Map<String, Integer> usageCount;
     @Getter
     private final List<String> orderedList;
+
+    public CmdHisList() {
+        this(30);
+    }
 
     public CmdHisList(int capacity) {
         this.capacity = capacity;
