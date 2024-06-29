@@ -44,7 +44,11 @@ public class CmdFix implements CmdExecutor {
                     doFixPackage(args);
                     break out;
                 case "--import":
-                    doFixImport(args);
+                    if (args.length > i + 1) {
+                        doFixImport(args[i + 1]);
+                    } else {
+                        doFixImport(null);
+                    }
                     break out;
                 case "--replace":
                     if (args.length > i + 2) {
@@ -125,10 +129,12 @@ public class CmdFix implements CmdExecutor {
         System.out.printf("修复完成，修复文件数: %s%n", fixNum.get());
     }
 
-    private void doFixImport(String[] args) {
+    private void doFixImport(String chooseFile) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
         AtomicInteger fixNum = new AtomicInteger();
-        javaFileMap.values().forEach(x -> x.forEach(y -> {
+        javaFileMap.values().forEach(x -> x.stream()
+                .filter(y -> chooseFile == null || y.getJavaSimpleName().equals(chooseFile))
+                .forEach(y -> {
             File file = y.getFile();
             String javaContent = FileUtils.readFile(file);
             String[] contents = javaContent.split("\n");
@@ -148,48 +154,21 @@ public class CmdFix implements CmdExecutor {
                         String importText;
                         String simpleJavaName;
                         if (s.startsWith("import static ")) {
+                            String lastStr = s.substring(s.lastIndexOf("."));
                             importText = s.substring("import static ".length(), s.lastIndexOf(";")).trim();
                             importText = importText.substring(0, importText.lastIndexOf("."));
                             simpleJavaName = importText.substring(importText.lastIndexOf(".") + 1);
+                            JavaFile javaFile = matchRightJavaFile(simpleJavaName, importText);
+                            if(javaFile != null) {
+                                String targetImport = "import static " + javaFile.getJavaName() + lastStr;
+                                replaceMap.put(s, targetImport);
+                            }
                         } else {
                             importText = s.substring("import ".length(), s.lastIndexOf(";")).trim();
                             simpleJavaName = importText.substring(importText.lastIndexOf(".") + 1);
-                        }
-                        if (javaFileMap.containsKey(simpleJavaName) && (
-                                // 前缀匹配
-                                getContext().getConfig().includePackage(importText)
-                        )) {
-                            List<JavaFile> matchJavaFiles = javaFileMap.get(simpleJavaName);
-                            boolean matched = false;
-                            for (JavaFile matchJavaFile : matchJavaFiles) {
-                                String matchJavaFilePath = matchJavaFile.getJavaName();
-                                if (matchJavaFilePath.equals(importText)) {
-                                    matched = true;
-                                    break;
-                                }
-                            }
-                            if (!matched) {
-                                JavaFile matchJavaFile = null;
-                                if (matchJavaFiles.size() > 1) {
-                                    boolean chose = false;
-                                    while (!chose) {
-                                        try {
-                                            System.out.println("匹配到多个文件，请选择其中一个用来修复 \n");
-                                            for (int i = 0; i < matchJavaFiles.size(); i++) {
-                                                System.out.printf("%d - %s%n", i, matchJavaFiles.get(i).getJavaName());
-                                            }
-                                            String choose = getContext().getScanner().nextLine().trim();
-                                            int chooseNum = Integer.parseInt(choose);
-                                            matchJavaFile = matchJavaFiles.get(chooseNum);
-                                            chose = true;
-                                        } catch (Throwable e) {
-                                            chose = false;
-                                        }
-                                    }
-                                } else {
-                                    matchJavaFile = matchJavaFiles.get(0);
-                                }
-                                String targetImport = "import " + matchJavaFile.getJavaName() + ";";
+                            JavaFile javaFile = matchRightJavaFile(simpleJavaName, importText);
+                            if(javaFile != null) {
+                                String targetImport = "import " + javaFile.getJavaName() + ";";
                                 replaceMap.put(s, targetImport);
                             }
                         }
@@ -217,6 +196,48 @@ public class CmdFix implements CmdExecutor {
             }
         }));
         System.out.printf("修复完成，修复文件数: %s%n", fixNum.get());
+    }
+
+    private JavaFile matchRightJavaFile(String sourceJavaName, String sourceImportText) {
+        Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
+        if (javaFileMap.containsKey(sourceJavaName) && (
+                // 前缀匹配
+                getContext().getConfig().includePackage(sourceImportText)
+        )) {
+            List<JavaFile> matchJavaFiles = javaFileMap.get(sourceJavaName);
+            boolean matched = false;
+            for (JavaFile matchJavaFile : matchJavaFiles) {
+                String matchJavaFilePath = matchJavaFile.getJavaName();
+                if (matchJavaFilePath.equals(sourceImportText)) {
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                JavaFile matchJavaFile = null;
+                if (matchJavaFiles.size() > 1) {
+                    boolean chose = false;
+                    while (!chose) {
+                        try {
+                            System.out.println("匹配到多个文件，请选择其中一个用来修复 \n");
+                            for (int i = 0; i < matchJavaFiles.size(); i++) {
+                                System.out.printf("%d - %s%n", i, matchJavaFiles.get(i).getJavaName());
+                            }
+                            String choose = getContext().getScanner().nextLine().trim();
+                            int chooseNum = Integer.parseInt(choose);
+                            matchJavaFile = matchJavaFiles.get(chooseNum);
+                            chose = true;
+                        } catch (Throwable e) {
+                            chose = false;
+                        }
+                    }
+                } else {
+                    matchJavaFile = matchJavaFiles.get(0);
+                }
+                return matchJavaFile;
+            }
+        }
+        return null;
     }
 
 

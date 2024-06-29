@@ -15,7 +15,3 @@
 - 加载: `load` 
 - 修复 package：`fix --package`
 - 修复 import：`fix --import`
-
-
-## 不足
-- 无法修复`import com.xxx.yyy.*;`的情况，需要手动修改。

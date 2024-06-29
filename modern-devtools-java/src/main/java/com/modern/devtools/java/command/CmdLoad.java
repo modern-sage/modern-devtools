@@ -25,6 +25,7 @@ public class CmdLoad implements CmdExecutor {
     @Override
     public void doExecute(String[] args) {
         Map<String, List<JavaFile>> javaFileMap = getContext().getJavaFileMap();
+        javaFileMap.clear();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         File currentFile = new File(getContext().getWorkPath());
         ForkJoinPool.commonPool().execute(() -> {
