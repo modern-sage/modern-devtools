@@ -1,6 +1,7 @@
 com.modern.devtools.java.command.CmdConfig
 com.modern.devtools.java.command.CmdExit
 com.modern.devtools.java.command.CmdFix
+com.modern.devtools.java.command.CmdHis
 com.modern.devtools.java.command.CmdInfo
 com.modern.devtools.java.command.CmdList
 com.modern.devtools.java.command.CmdLoad

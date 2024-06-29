@@ -31,6 +31,10 @@ public enum Command {
             new String[]{"--package", "--import", "--replace"},
             new String[]{"修复 package 信息", "修复 import 信息", "替换文本，参数是 ${source} ${target}"}),
 
+    HIS("his", "执行历史",
+            new String[]{"--list", "--exec"},
+            new String[]{"查看执行历史", "执行历史命令，参数是 ${指令序号}"}),
+
     EXIT("exit", "推出"),
 
     ;

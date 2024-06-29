@@ -27,12 +27,15 @@ public class Context {
      */
     private Config config;
 
+    private final CmdHisList cmdHisList;
+
     Map<String, List<JavaFile>> javaFileMap = new HashMap<>();
 
     private Context() {
         this.running = true;
         scanner = new Scanner(System.in);
         this.config = new Config();
+        this.cmdHisList = new CmdHisList(30);
     }
 
     public void destroy() {

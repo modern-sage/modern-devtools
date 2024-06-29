@@ -1,5 +1,7 @@
 package com.modern.devtools.java.command;
 
+import com.modern.devtools.java.Context;
+
 import java.util.*;
 
 /**
@@ -30,6 +32,7 @@ public abstract class CombinerCmdExecutors {
         if (executors != null) {
             try {
                 executors.forEach(x -> x.execute(command));
+                Context.getContext().getCmdHisList().add(command, c -> !c.startsWith("his"));
             } catch (Throwable e) {
                 System.err.println("报错啦!");
                 e.printStackTrace();
