@@ -63,7 +63,7 @@ public class CmdFix implements CmdExecutor {
             String javaContent = FileUtils.readFile(file);
             String targetJavaContent = null;
             if (javaContent.contains(source)) {
-                targetJavaContent = javaContent.replaceAll(source, target);
+                targetJavaContent = javaContent.replace(source, target);
             }
             if(targetJavaContent != null) {
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {

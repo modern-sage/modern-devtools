@@ -28,7 +28,14 @@ public abstract class CombinerCmdExecutors {
         List<CmdExecutor> executors = DEPOSITORY.keySet().stream().filter(command::startsWith)
                 .findFirst().map(DEPOSITORY::get).orElse(null);
         if (executors != null) {
-            executors.forEach(x -> x.execute(command));
+            try {
+                executors.forEach(x -> x.execute(command));
+            } catch (Throwable e) {
+                System.err.println("报错啦!");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("无效指令");
         }
     }
 
