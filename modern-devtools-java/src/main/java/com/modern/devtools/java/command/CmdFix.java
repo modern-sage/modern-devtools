@@ -53,6 +53,12 @@ public class CmdFix implements CmdExecutor {
                 case "--replace":
                     if (args.length > i + 2) {
                         doFixReplace(args[i + 1], args[i + 2]);
+                    } else {
+                        System.out.println("请输入需要替换的字符： \n");
+                        String source = getContext().getScanner().nextLine().trim();
+                        System.out.println("请输入目标字符： \n");
+                        String target = getContext().getScanner().nextLine().trim();
+                        doFixReplace(source, target);
                     }
                     break out;
             }
@@ -176,7 +182,7 @@ public class CmdFix implements CmdExecutor {
                         if (!replaceMap.isEmpty()) {
                             fixNum.addAndGet(1);
                             System.out.printf("修复 %s import 信息%n", y.getJavaName());
-                            String targetContext = javaContent.toString();
+                            String targetContext = javaContent;
                             for (String key : replaceMap.keySet()) {
                                 String target = replaceMap.get(key);
                                 targetContext = targetContext.replace(key, target);
