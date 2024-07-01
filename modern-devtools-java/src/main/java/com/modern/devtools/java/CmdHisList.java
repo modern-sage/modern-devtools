@@ -38,7 +38,7 @@ public class CmdHisList implements Serializable {
                     break;
                 }
             }
-            if(index > 0) {
+            if(index > -1) {
                 numIndex[index] += 1;
             } else {
                 boolean inserted = false;
