@@ -53,8 +53,10 @@ public class CmdHis implements CmdExecutor {
 
     private void doHisList() {
         List<String[]> kvs = new LinkedList<>();
-        for (int i = 0; i < getContext().getCmdHisList().getOrderedList().size(); i++) {
-            kvs.add(new String[]{String.valueOf(i), getContext().getCmdHisList().getOrderedList().get(i)});
+        for (int i = 0; i < getContext().getCmdHisList().getCapacity(); i++) {
+            if(getContext().getCmdHisList().get(i) != null) {
+                kvs.add(new String[]{String.valueOf(i), getContext().getCmdHisList().get(i)});
+            }
         }
         ConsoleUtils.printKvs(kvs);
     }
@@ -62,7 +64,7 @@ public class CmdHis implements CmdExecutor {
     private void doHisExec(String index) {
         try {
             int i = Integer.parseInt(index);
-            String cmd = getContext().getCmdHisList().getOrderedList().get(i);
+            String cmd = getContext().getCmdHisList().get(i);
             CombinerCmdExecutors.execute(cmd);
         } catch (Throwable e) {
             System.err.println("无效的下标");

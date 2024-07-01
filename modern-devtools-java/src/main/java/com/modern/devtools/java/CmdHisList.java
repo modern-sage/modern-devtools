@@ -1,6 +1,6 @@
 package com.modern.devtools.java;
 
-import lombok.Getter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.*;
@@ -12,12 +12,11 @@ import java.util.function.Predicate;
  * @author <a href="mailto:brucezhang_jjz@163.com">zhangjun</a>
  * @since 1.0.0
  */
-
+@Data
 public class CmdHisList implements Serializable {
     private final int capacity;
-    private final Map<String, Integer> usageCount;
-    @Getter
-    private final List<String> orderedList;
+    private final int[] numIndex;
+    private final String[] commands;
 
     public CmdHisList() {
         this(30);
@@ -25,41 +24,60 @@ public class CmdHisList implements Serializable {
 
     public CmdHisList(int capacity) {
         this.capacity = capacity;
-        this.usageCount = new LinkedHashMap<>();
-        this.orderedList = new ArrayList<>();
+        this.numIndex = new int[capacity];
+        Arrays.fill(numIndex, Integer.MIN_VALUE);
+        this.commands = new String[capacity];
     }
 
     public void add(String command, Predicate<String>... filter) {
         if (filter == null || Arrays.stream(filter).allMatch(x -> x.test(command))) {
-            if (usageCount.containsKey(command)) {
-                usageCount.compute(command, (k, count) -> count + 1);
-                updateOrderedList();
-            } else {
-                // 如果是新元素
-                if (usageCount.size() >= capacity) {
-                    // 如果已达到容量上限，移除使用次数最少的元素
-                    String leastUsed = orderedList.remove(orderedList.size() - 1);
-                    usageCount.remove(leastUsed);
+            int index = -1;
+            for (int i = 0; i < commands.length; i++) {
+                if(Objects.equals(commands[i], command)) {
+                    index = i;
+                    break;
                 }
-                usageCount.put(command, 1);
-                orderedList.add(0, command);
+            }
+            if(index > 0) {
+                numIndex[index] += 1;
+            } else {
+                boolean inserted = false;
+                int minIndex = Integer.MAX_VALUE;
+                for (int i = 0; i < commands.length; i++) {
+                    if(commands[i] == null) {
+                        commands[i] = command;
+                        numIndex[i] = 1;
+                        inserted = true;
+                        break;
+                    }
+                    minIndex = Math.min(minIndex, numIndex[i]);
+                }
+                if(!inserted) {
+                    commands[minIndex] = command;
+                    numIndex[minIndex] = 1;
+                }
+            }
+            sort();
+        }
+    }
+
+    private void sort() {
+        for (int i = 0; i < numIndex.length - 1; i++) {
+            for (int j = 0; j < numIndex.length - i - 1; j++) {
+                if (numIndex[j] < numIndex[j + 1]) {
+                    int temp = numIndex[j];
+                    numIndex[j] = numIndex[j + 1];
+                    numIndex[j + 1] = temp;
+                    String cmdTemp = commands[j];
+                    commands[j] = commands[j + 1];
+                    commands[j + 1] = cmdTemp;
+                }
             }
         }
     }
 
-    private void updateOrderedList() {
-        orderedList.sort((a, b) -> usageCount.get(b).compareTo(usageCount.get(a)));
-    }
-
     public String get(int index) {
-        if (index < 0 || index >= orderedList.size()) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + orderedList.size());
-        }
-        return orderedList.get(index);
-    }
-
-    public int size() {
-        return orderedList.size();
+        return commands[index];
     }
 
 }
