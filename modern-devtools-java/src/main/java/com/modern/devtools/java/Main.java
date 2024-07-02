@@ -1,23 +1,11 @@
 package com.modern.devtools.java;
 
 import com.modern.devtools.java.command.CombinerCmdExecutors;
-import com.modern.devtools.java.third.clyoudu.consoletable.ConsoleTable;
-import com.modern.devtools.java.third.clyoudu.consoletable.enums.Align;
-import com.modern.devtools.java.third.clyoudu.consoletable.table.Cell;
-import com.modern.devtools.java.utils.FileUtils;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Predicate;
-
-import static java.io.File.separatorChar;
 
 /**
- * Main
- * native-image --no-fallback -jar modern-devtools-java-1.0.0-SNAPSHOT.jar modernDevtoolsJava
+ * Main <br/>
+ * native-image --no-fallback -jar modern-devtools-java-1.0.0-SNAPSHOT.jar modernDevtoolsJava-1.0.0 <br/>
+ *
  *
  * @author <a href="mailto:brucezhang_jjz@163.com">zhangj</a>
  * @since 1.0.0
