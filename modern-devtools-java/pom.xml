@@ -28,7 +28,7 @@
         </dependency>
     </dependencies>
 
-    <build>
+        <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -49,26 +49,6 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <version>0.10.2</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <id>build-native</id>
-                        <goals>
-                            <goal>compile-no-fork</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <buildArgs>
-                        <buildArg>-Ob</buildArg>
-                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>

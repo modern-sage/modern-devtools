@@ -16,10 +16,11 @@ import java.util.function.Predicate;
 import static java.io.File.separatorChar;
 
 /**
- * $desc
+ * Main
+ * native-image --no-fallback -jar modern-devtools-java-1.0.0-SNAPSHOT.jar modernDevtoolsJava
  *
  * @author <a href="mailto:brucezhang_jjz@163.com">zhangj</a>
- * @since $version
+ * @since 1.0.0
  */
 public class Main {
     public final static Context CONTEXT = Context.getContext();
