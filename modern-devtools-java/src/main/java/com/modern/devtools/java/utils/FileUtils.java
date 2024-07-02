@@ -12,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Predicate;
 
+import static com.modern.devtools.java.constant.Base.CHARSET;
 import static com.modern.devtools.java.constant.Base.SEPARATOR_CHAR;
 
 /**
@@ -28,7 +29,7 @@ public abstract class FileUtils {
 
     public static String readFile(File file) {
         StringBuilder javaContent = new StringBuilder();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, CHARSET))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 javaContent.append(line).append("\n");

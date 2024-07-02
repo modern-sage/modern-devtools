@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.modern.devtools.java.constant.Base.CHARSET;
+
 /**
  * CmdInfoJava
  *
@@ -76,7 +78,7 @@ public class CmdFix implements CmdExecutor {
                 targetJavaContent = javaContent.replace(source, target);
             }
             if(targetJavaContent != null) {
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, CHARSET))) {
                     bw.write(targetJavaContent);
                     bw.flush();
                 } catch (IOException e) {
@@ -114,7 +116,7 @@ public class CmdFix implements CmdExecutor {
                     if (!packageText.equals(y.getJavaPath())) {
                         String targetImport = "package " + y.getJavaPath() + ";";
                         String targetContext = javaContent.replace(sourceImport, targetImport);
-                        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, CHARSET))) {
                             bw.write(targetContext);
                             bw.flush();
                         } catch (IOException e) {
@@ -188,7 +190,7 @@ public class CmdFix implements CmdExecutor {
                                 targetContext = targetContext.replace(key, target);
                                 System.out.printf("%s -> %s%n", key, target);
                             }
-                            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, CHARSET))) {
                                 bw.write(targetContext);
                                 bw.flush();
                             } catch (IOException e) {

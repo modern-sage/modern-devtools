@@ -15,6 +15,8 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.modern.devtools.java.constant.Base.CHARSET;
+
 /**
  * 推出
  *
@@ -90,7 +92,7 @@ public class CmdList implements CmdExecutor {
         AtomicInteger errorNum = new AtomicInteger();
         javaFileMap.values().forEach(x -> x.forEach(y -> {
             File file = y.getFile();
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, CHARSET))) {
                 String line;
                 StringBuilder sb = new StringBuilder();
                 while ((line = bufferedReader.readLine()) != null) {

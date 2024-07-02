@@ -1,6 +1,8 @@
 package com.modern.devtools.java.constant;
 
 import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 常量
@@ -11,6 +13,8 @@ import java.io.File;
 public interface Base {
 
     String SEPARATOR_CHAR = File.separatorChar + "";
+
+    Charset CHARSET = StandardCharsets.UTF_8;
 
 
 }

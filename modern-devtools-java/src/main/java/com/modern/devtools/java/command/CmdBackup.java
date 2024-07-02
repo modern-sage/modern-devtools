@@ -10,6 +10,8 @@ import com.modern.devtools.java.ContextMemento;
 
 import java.io.*;
 
+import static com.modern.devtools.java.constant.Base.CHARSET;
+
 /**
  * CmdBackup
  *
@@ -50,7 +52,7 @@ public class CmdBackup implements CmdExecutor {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonString = objectMapper.writeValueAsString(getContext());
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename, CHARSET))) {
                 bw.write(jsonString);
                 bw.flush();
                 System.out.println("存档成功: " + filename);
